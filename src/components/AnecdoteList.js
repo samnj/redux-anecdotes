@@ -5,18 +5,27 @@ import { setNotification, removeNotification } from '../reducers/notificationRed
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(state => state.anecdotes)
+  const filter = useSelector(state => state.filter)
   const dispatch = useDispatch()
 
   const sortFn = (a, b) => {
     return b.votes - a.votes
   }
 
-  const sortedAnecdotes = [ ...anecdotes ].sort(sortFn)
+  const visibleAnecdotes = () => {
+    if (filter === '') {
+      return anecdotes
+    }
+
+    const filtered = anecdotes.filter(a =>
+      a.content.toLowerCase().includes(filter))
+
+    return filtered
+  }
 
   const voteHandler = (anecdote) => {
     dispatch(vote(anecdote.id))
     const message = `you voted '${anecdote.content}'`
-    dispatch(setNotification(message))
     dispatch(setNotification(message))
     setTimeout(() => {
       dispatch(removeNotification())
@@ -25,18 +34,19 @@ const AnecdoteList = () => {
 
   return (
     <div>
-      <h2>Anecdotes</h2>
-      {sortedAnecdotes.map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
+      {visibleAnecdotes()
+        .sort(sortFn)
+        .map(anecdote =>
+          <div key={anecdote.id}>
+            <div>
+              {anecdote.content}
+            </div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => voteHandler(anecdote)}>vote</button>
+            </div>
           </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => voteHandler(anecdote)}>vote</button>
-          </div>
-        </div>
-      )}
+        )}
     </div>
   )
 }
