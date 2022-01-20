@@ -17,10 +17,8 @@ const AnecdoteList = () => {
       return anecdotes
     }
 
-    const filtered = anecdotes.filter(a =>
+    return anecdotes.filter(a =>
       a.content.toLowerCase().includes(filter))
-
-    return filtered
   }
 
   const voteHandler = (anecdote) => {
@@ -28,7 +26,7 @@ const AnecdoteList = () => {
     const message = `you voted '${anecdote.content}'`
     dispatch(setNotification(message))
     setTimeout(() => {
-      dispatch(removeNotification())
+      dispatch(removeNotification(message))
     }, 5000)
   }
 

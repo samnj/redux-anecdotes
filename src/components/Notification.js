@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Notification = () => {
-  const notification = useSelector(state => state.notification)
+  const notifications = useSelector(state => state.notifications)
 
   const visible = {
     border: 'solid',
@@ -15,8 +15,8 @@ const Notification = () => {
   }
 
   return (
-    <div style={notification === '' ? hidden : visible}>
-      {notification}
+    <div style={notifications.length === 0 ? hidden : visible}>
+      {notifications.at(-1)}
     </div>
   )
 }
