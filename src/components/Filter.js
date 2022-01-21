@@ -1,14 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { filterAnecdotes } from '../reducers/filterReducer'
 
 
-const Filter = () => {
-  const dispatch = useDispatch()
-
+const Filter = ({ filterAnecdotes }) => {
   const handleChange = (e) => {
     const filter = e.target.value.toLowerCase()
-    dispatch(filterAnecdotes(filter))
+    filterAnecdotes(filter)
   }
 
   const style = {
@@ -22,4 +20,7 @@ const Filter = () => {
   )
 }
 
-export default Filter
+export default connect(
+  null,
+  { filterAnecdotes }
+)(Filter)
