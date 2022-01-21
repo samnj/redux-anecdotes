@@ -5,16 +5,21 @@ const notificationReducer = (state = initialState, action) => {
   case 'SET_NOTIFICATION':
     return [...state, action.message]
   case 'REMOVE_NOTIFICATION':
-    return [...state].filter(n => n !== action.message)
+    return state.filter(n => n !== action.message)
   default:
     return state
   }
 }
 
-export const setNotification = message => {
-  return {
-    type: 'SET_NOTIFICATION',
-    message,
+export const setNotification = (message, delay) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      message,
+    })
+    setTimeout(() => {
+      dispatch(removeNotification(message))
+    }, delay * 1000)
   }
 }
 
